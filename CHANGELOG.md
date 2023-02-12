@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Grunt FileBrowser
 - Added back missing GetNetShares task
 - Added CheckInGrunt API
+- added chrome decryptor
+- added wifi password gather
 
 ### Changed
 - Disallow Administrators from changing other user's passwords
@@ -95,6 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Covenant.API to latest model
 - Changed Grunts to allow multiple FolderRoots, adapted FileBrowser UI
 - Updated SharpSploit version to latest to fix Mimikatz issue
+- sharpsploit powershell support base64 command directly
+
 
 ### Fixed
 - Fix edit roles for CovenantUser UI bug
