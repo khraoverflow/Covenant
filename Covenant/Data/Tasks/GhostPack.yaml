@@ -83,6 +83,7 @@
   TaskingType: Assembly
   UnsafeCompile: false
   TokenTask: false
+  Compiled: true
   Options:
   - Name: Command
     Value: triage
