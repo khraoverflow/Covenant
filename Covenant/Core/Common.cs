@@ -97,8 +97,8 @@ namespace Covenant.Core
 
         public enum DotNetVersion
         {
-            Net35,
             Net40,
+            Net35,
             Net50
         }
 

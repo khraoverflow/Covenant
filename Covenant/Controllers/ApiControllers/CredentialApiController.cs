@@ -12,10 +12,14 @@ using Microsoft.AspNetCore.Authorization;
 using Covenant.Core;
 using Covenant.Models;
 using Covenant.Models.Covenant;
+using System.IO;
+using NLog.LayoutRenderers;
+using System;
+using System.Text;
 
 namespace Covenant.Controllers
 {
-    [ApiController, Route("api/credentials"), Authorize(Policy = "RequireJwtBearer")]
+    [ApiController, Route("api/credentials"), Authorize]
     public class CredentialApiController : Controller
     {
         private readonly ICovenantService _service;
@@ -40,9 +44,19 @@ namespace Covenant.Controllers
         // Get a list of CapturedPasswordCredentials
         // </summary>
         [HttpGet("passwords", Name = "GetPasswordCredentials")]
+        [Produces(Common.DefaultContentTypeMapping, "text/xml", "text/scriptlet", "text/hta", "text/plain")]
+        [ProducesResponseType(200, Type = typeof(Stream))]
         public async Task<ActionResult<IEnumerable<CapturedPasswordCredential>>> GetPasswordCredentials()
         {
-            return Ok(await _service.GetPasswordCredentials());
+            //return Ok(await _service.GetPasswordCredentials());
+            IEnumerable<CapturedPasswordCredential> passwords = await _service.GetPasswordCredentials();
+            string result = "";
+            foreach (var item in passwords)
+            {
+                result += item.Username + ":" + item.Password;
+                result += Environment.NewLine;
+            }
+            return File(Encoding.UTF8.GetBytes(result),"text/xml","passwords.txt");
         }
 
         // GET: api/credentials/hashes
@@ -52,7 +66,16 @@ namespace Covenant.Controllers
         [HttpGet("hashes", Name = "GetHashCredentials")]
         public async Task<ActionResult<IEnumerable<CapturedHashCredential>>> GetHashCredentials()
         {
-            return Ok(await _service.GetHashCredentials());
+            //return Ok(await _service.GetHashCredentials());
+
+            IEnumerable<CapturedHashCredential> hashes = await _service.GetHashCredentials();
+            string result = "";
+            foreach (var item in hashes)
+            {
+                result += item.Username + ":" + item.Hash;
+                result += Environment.NewLine;
+            }
+            return File(Encoding.UTF8.GetBytes(result), "text/xml", "Hashes.txt");
         }
 
         // GET: api/credentials/tickets
@@ -62,7 +85,16 @@ namespace Covenant.Controllers
         [HttpGet("tickets", Name = "GetTicketCredentials")]
         public async Task<ActionResult<IEnumerable<CapturedTicketCredential>>> GetTicketCredentials()
         {
-            return Ok(await _service.GetTicketCredentials());
+            //return Ok(await _service.GetTicketCredentials());
+            IEnumerable<CapturedTicketCredential> tickets = await _service.GetTicketCredentials();
+            string result = "";
+            foreach (var item in tickets)
+            {
+                result += item.Username + ":" + item.Ticket;
+                result += Environment.NewLine;
+                result += Environment.NewLine;
+            }
+            return File(Encoding.UTF8.GetBytes(result), "text/xml", "Tickets.txt");
         }
 
         // GET api/credentials/{id}
@@ -95,6 +127,8 @@ namespace Covenant.Controllers
         // Get a CapturedPasswordCredential by id
         // </summary>
         [HttpGet("passwords/{id}", Name = "GetPasswordCredential")]
+        [Produces(Common.DefaultContentTypeMapping, "text/xml", "text/scriptlet", "text/hta", "text/plain", "application/json")]
+        [ProducesResponseType(200, Type = typeof(Stream))]
         public async Task<ActionResult<CapturedPasswordCredential>> GetPasswordCredential(int id)
         {
             try
