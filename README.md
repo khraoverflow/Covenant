@@ -13,8 +13,17 @@ Covenant is an ASP.NET Core, cross-platform application that includes a web-base
 
 ## Quick-Start Guide
 
-Please see the [Installation and Startup](https://github.com/cobbr/Covenant/wiki/Installation-And-Startup) guide to get started with Covenant!
+Please see the [Installation and Startup](https://github.com/khraoverflow/Covenant/wiki/Installation-And-Startup) guide to get started with Covenant!
+## docker quick-start :
 
+```
+git clone --recurse-submodules https://github.com/khraoverflow/Covenant
+#docker install:
+cd Covenant
+docker build -t covenant .
+cd Covenant/Data
+docker run -it -p 7443:7443 -p 80:80 -p 443:443 --name covenant -v $PWD:/app/Data covenant
+```
 The [Wiki](https://github.com/cobbr/Covenant/wiki) documents most of Covenant's core features and how to use them.
 
 ## Features
