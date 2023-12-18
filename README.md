@@ -18,7 +18,7 @@ Please see the [Installation and Startup](https://github.com/khraoverflow/Covena
 
 ```
 git clone --recurse-submodules https://github.com/khraoverflow/Covenant
-#docker install:
+#docker build:
 cd Covenant
 docker build -t covenant .
 cd Covenant/Data
