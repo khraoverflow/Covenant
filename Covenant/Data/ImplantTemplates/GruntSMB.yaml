@@ -12,8 +12,8 @@
   - Name: Bridge
     Description: Creates a C2 Bridge for custom listeners.
   CompatibleDotNetVersions:
-  - Net35
   - Net40
+  - Net35
   StagerCode: |
     using System;
     using System.Net;

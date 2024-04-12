@@ -36,6 +36,12 @@
             <p class="terminal-text-color task-text-body">(<b>@GruntCommand.User.UserName</b>) > @GruntCommand.Command</p>
         </div>
     </div>
+
+    <div class="align-self-end">
+        <a class="xbutton p-0" type="button" @onclick="(async item => await OnCopyOutput(GruntCommand))">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-copy"><rect width="8" height="4" x="8" y="2" rx="1" ry="1" /><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" /><path d="M16 4h2a2 2 0 0 1 2 2v4" /><path d="M21 14H11" /><path d="m15 10-4 4 4 4" /></svg>
+        </a>
+    </div>
     <div class="card-header p-0 border-top-0 border-bottom-0" id="tasking-header-@GruntCommand.Id"></div>
     @if (!this.IsMinimized)
     {
@@ -233,5 +239,10 @@
             return Convert.ToBase64String(ms.ToArray());
         }
         return "";
+    }
+
+    private async Task OnCopyOutput(GruntCommand command)
+    {
+         await IJSRuntime.InvokeAsync<string>("CopyToClipboard", command.CommandOutput.Output);
     }
 }

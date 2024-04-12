@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### new
+- added GetSystemPotato elevate current process impersonating system, or launching process as system
+- added button to copy grunt command output to clipboard
 ### Added
 - Added ability to specify custom admin port number
 - Added Covenant trace logging

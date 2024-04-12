@@ -10,8 +10,8 @@
   - Name: HTTP
     Description: Listens on HTTP protocol.
   CompatibleDotNetVersions:
-  - Net35
   - Net40
+  - Net35
   StagerCode: |
     using System;
     using System.Net;
