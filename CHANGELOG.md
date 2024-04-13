@@ -185,7 +185,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed GruntTask export to exclude GruntTaskOption value property
 - Updated codemirror, added night theme for codemirror
 - Removed Covenant certificate hash message
-
+- powershell execution takes plaintext command or encoded with -e before base64 command
 ### Fixed
 - Fixed order of Upload parameters
 - Fixed Brute compilation path for case-sensitive file systems

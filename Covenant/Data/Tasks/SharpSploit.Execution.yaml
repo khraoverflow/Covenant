@@ -550,17 +550,17 @@
         {
             try
             {
-                try
-                {
-                    byte[] ByteFromStr = Convert.FromBase64String(PowerShellCommand);
-                    PowerShellCommand = Encoding.Unicode.GetString(ByteFromStr);
-                    return Shell.PowerShellExecute(PowerShellCommand);
-                }
-                catch(Exception e)
-                {
-                    return Shell.PowerShellExecute(PowerShellCommand, true);
-                }
-                
+              if(PowerShellCommand.Trim().StartsWith("-e",true,null))
+              {
+                PowerShellCommand = PowerShellCommand.Substring( PowerShellCommand.IndexOf('-')+2, PowerShellCommand.Length - PowerShellCommand.IndexOf('-')-2).Trim();
+                byte[] ByteFromStr = Convert.FromBase64String(PowerShellCommand);
+                PowerShellCommand = Encoding.Unicode.GetString(ByteFromStr);
+                return Shell.PowerShellExecute(PowerShellCommand);
+              }
+              else
+              {
+                return Shell.PowerShellExecute(PowerShellCommand, true);
+              }
             }
             catch (Exception e) { return e.GetType().FullName + ": " + e.Message + Environment.NewLine + e.StackTrace; }
         }
