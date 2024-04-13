@@ -46,14 +46,14 @@ namespace Covenant.Models
         {
             IEnumerable<string> items = line.Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries);
             List<string> reversed = items.Reverse().ToList();
-            if (reversed.Count < 11)
+            if (reversed.Count < 8)
             {
                 return null;
             }
-            string strLastWriteTime = $"{reversed[2]} {reversed[1]} {reversed[0]}";
-            string strLastAccessTime = $"{reversed[5]} {reversed[4]} {reversed[3]}";
-            string strCreationTime = $"{reversed[8]} {reversed[7]} {reversed[6]}";
-            string strLength = reversed[9];
+            string strLastWriteTime = $"{reversed[1]} {reversed[0]}";
+            string strLastAccessTime = $"{reversed[3]} {reversed[2]}";
+            string strCreationTime = $"{reversed[5]} {reversed[4]}";
+            string strLength = reversed[6];
             string pattern = @$"^(.+)\s+{strLength}\s+{strCreationTime}\s+{strLastAccessTime}\s+{strLastWriteTime}";
             MatchCollection matches = Regex.Matches(line, pattern);
             if (matches.Count != 1 || matches[0].Groups.Count != 2 ||

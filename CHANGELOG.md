@@ -5,9 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-### new
-- added GetSystemPotato elevate current process impersonating system, or launching process as system
-- added button to copy grunt command output to clipboard
 ### Added
 - Added ability to specify custom admin port number
 - Added Covenant trace logging
@@ -37,6 +34,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Grunt FileBrowser
 - Added back missing GetNetShares task
 - Added CheckInGrunt API
+- added GetSystemPotato elevate current process impersonating system, or launching process as system
+- added button to copy grunt command output to clipboard
 
 ### Changed
 - Disallow Administrators from changing other user's passwords
@@ -153,6 +152,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed low max file upload size for InputFile component
 - Fixed DateTimePicker for KillDate doesn't change via UI
 - Fixed missing DonutCore nuget package
+- fixed grunt deleting when grunt has folder added in files and folders view
+- fixing files and folders view not parsing on ListDirectory command
 
 ## [v0.6] - 2020-08-04
 ### Added
