@@ -56,14 +56,18 @@ namespace Covenant.Models
             string strLength = reversed[6];
             string pattern = @$"^(.+)\s+{strLength}\s+{strCreationTime}\s+{strLastAccessTime}\s+{strLastWriteTime}";
             MatchCollection matches = Regex.Matches(line, pattern);
+
+            string[] formats = { "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm:ss" };
+
             if (matches.Count != 1 || matches[0].Groups.Count != 2 ||
                 !long.TryParse(strLength, out long Length) ||
-                !DateTime.TryParse(strLastWriteTime, out DateTime LastWriteTime) ||
-                !DateTime.TryParse(strLastAccessTime, out DateTime LastAccessTime) ||
-                !DateTime.TryParse(strCreationTime, out DateTime CreationTime))
+                !DateTime.TryParseExact(strLastWriteTime, formats, null, System.Globalization.DateTimeStyles.None, out DateTime LastWriteTime) ||
+                !DateTime.TryParseExact(strLastAccessTime, formats, null, System.Globalization.DateTimeStyles.None, out DateTime LastAccessTime) ||
+                !DateTime.TryParseExact(strCreationTime, formats, null, System.Globalization.DateTimeStyles.None, out DateTime CreationTime))
             {
                 return null;
             }
+
             string FullName = matches[0].Groups[1].Value.TrimEnd();
             return Length == 0 ?
                 new Folder
