@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added CheckInGrunt API
 - added GetSystemPotato elevate current process impersonating system, or launching process as system
 - added button to copy grunt command output to clipboard
+- added efsPotato elevate current process impersonating system, or launching process as system (and renamed getsystemPotato to godpotato)
 
 ### Changed
 - Disallow Administrators from changing other user's passwords
