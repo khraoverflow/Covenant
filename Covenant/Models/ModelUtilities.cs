@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Covenant.Models.Grunts;
+using System.Globalization;
 
 namespace Covenant.Models
 {
@@ -50,23 +51,50 @@ namespace Covenant.Models
             {
                 return null;
             }
-            string strLastWriteTime = $"{reversed[1]} {reversed[0]}";
-            string strLastAccessTime = $"{reversed[3]} {reversed[2]}";
-            string strCreationTime = $"{reversed[5]} {reversed[4]}";
-            string strLength = reversed[6];
-            string pattern = @$"^(.+)\s+{strLength}\s+{strCreationTime}\s+{strLastAccessTime}\s+{strLastWriteTime}";
-            MatchCollection matches = Regex.Matches(line, pattern);
 
-            string[] formats = { "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm:ss" };
+            string date12HPattern = @"\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2}:\d{2} (?:AM|PM)";
+            string date24hPatter = @"\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{2}:\d{2}";
+            MatchCollection dates12hFormat = Regex.Matches(line,date12HPattern);
+            MatchCollection dates24hFormat = Regex.Matches(line,date24hPatter);
 
-            if (matches.Count != 1 || matches[0].Groups.Count != 2 ||
-                !long.TryParse(strLength, out long Length) ||
-                !DateTime.TryParseExact(strLastWriteTime, formats, null, System.Globalization.DateTimeStyles.None, out DateTime LastWriteTime) ||
-                !DateTime.TryParseExact(strLastAccessTime, formats, null, System.Globalization.DateTimeStyles.None, out DateTime LastAccessTime) ||
-                !DateTime.TryParseExact(strCreationTime, formats, null, System.Globalization.DateTimeStyles.None, out DateTime CreationTime))
+            string strLastWriteTime;
+            string strLastAccessTime;
+            string strCreationTime;
+            string strLength;
+
+            if(dates12hFormat.Count > 2 )
+            {
+                strCreationTime = dates12hFormat[0].ToString();
+                strLastAccessTime = dates12hFormat[1].ToString();
+                strLastWriteTime = dates12hFormat[2].ToString();
+                strLength = reversed[9];
+            }
+            else if (dates24hFormat.Count > 2 )
+            {
+                strCreationTime = dates24hFormat[0].ToString();
+                strLastAccessTime = dates24hFormat[1].ToString();
+                strLastWriteTime = dates24hFormat[2].ToString();
+                strLength = reversed[6];
+            }
+            else 
             {
                 return null;
             }
+
+            string pattern = @$"^(.+)\s+{strLength}\s+{strCreationTime}\s+{strLastAccessTime}\s+{strLastWriteTime}";
+            MatchCollection matches = Regex.Matches(line, pattern);
+
+            string[] formats = { "M/d/yyyy h:m:ss tt", "MM/dd/yyyy hh:mm:ss tt", "dd/MM/yyyy HH:mm:ss", "MM/dd/yyyy HH:mm:ss" };
+
+            if (matches.Count != 1 || matches[0].Groups.Count != 2 ||
+                !long.TryParse(strLength, out long Length))
+            {
+                return null;
+            }
+
+            DateTime.TryParseExact(strLastWriteTime, formats, CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime LastWriteTime);
+            DateTime.TryParseExact(strLastAccessTime, formats, CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime LastAccessTime);
+            DateTime.TryParseExact(strCreationTime, formats, CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime CreationTime);
 
             string FullName = matches[0].Groups[1].Value.TrimEnd();
             return Length == 0 ?
