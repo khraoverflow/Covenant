@@ -410,6 +410,38 @@ namespace Covenant.Core
                 {
                     new Theme
                     {
+                        Name = "green on dark",
+                        Description = "A dark theme meant for lawless heathens.",
+
+                        BackgroundColor = "#232323",
+                        BackgroundTextColor = "#26a269",
+
+                        PrimaryColor = "#26a269",
+                        PrimaryTextColor = "#033904",
+                        PrimaryHighlightColor = "#2ec27e",
+
+                        SecondaryColor = "#9a9996",
+                        SecondaryTextColor = "#000000",
+                        SecondaryHighlightColor = "#dae0e5",
+
+                        TerminalColor = "#000000",
+                        TerminalTextColor = "#deddda",
+                        TerminalHighlightColor = "#c0bfbc",
+                        TerminalBorderColor = "#9a9996",
+
+                        NavbarColor = "#26a269",
+                        SidebarColor = "#161616",
+
+                        InputColor = "#deddda",
+                        InputDisabledColor = "#5e5e5e",
+                        InputTextColor = "#000000",
+                        InputHighlightColor = "#ffffff",
+
+                        TextLinksColor = "#ffffff",
+                        CodeMirrorTheme = CodeMirrorTheme.night
+                    },
+                    new Theme
+                    {
                         Name = "Classic Theme",
                         Description = "Covenant's standard, default theme.",
 
