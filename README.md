@@ -22,7 +22,7 @@ git clone --recurse-submodules https://github.com/khraoverflow/Covenant
 cd Covenant
 docker build -t covenant .
 cd Covenant/Data
-docker run -it -p 7443:7443 -p 80:80 -p 443:443 --name covenant -v $PWD:/app/Data covenant
+docker run -it -p 7443:7443 -p 80:80 -p 443:443 -p 1080:1080 --name covenant -v $PWD:/app/Data covenant
 ```
 The [Wiki](https://github.com/cobbr/Covenant/wiki) documents most of Covenant's core features and how to use them.
 
