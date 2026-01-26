@@ -105,6 +105,15 @@ namespace Covenant.Models.Listeners
 
         private string ListenerStaticHostDirectory { get { return this.ListenerDirectory + "Static" + Path.DirectorySeparatorChar; } }
 
+        public string SocksWebsocketEndpoint { get; set; } = "/api/ws";
+
+        public string SocksUsername { get; set; }
+
+        public string SocksPassword { get; set; }
+
+        [Required, Range(1, 65535)]
+        public int SocksPort { get; set; } = 1080;
+
         public HttpListener()
         {
             this.Description = "Listens on HTTP protocol.";
@@ -220,6 +229,10 @@ namespace Covenant.Models.Listeners
                     .UseSetting("ProfileUrls", JsonConvert.SerializeObject((this.Profile as HttpProfile).HttpUrls))
                     .UseSetting("ListenerDirectory", this.ListenerDirectory)
                     .UseSetting("ListenerStaticHostDirectory", this.ListenerStaticHostDirectory)
+                    .UseSetting("SocksPort", this.SocksPort.ToString())
+                    .UseSetting("SocksUsername", this.SocksUsername)
+                    .UseSetting("SocksPassword", this.SocksPassword)
+                    .UseSetting("SocksWebsocketEndpoint", this.SocksWebsocketEndpoint)
                     .UseUrls((this.UseSSL ? "https://" : "http://") + this.BindAddress + ":" + this.BindPort);
                 })
                 .Build();
@@ -342,6 +355,14 @@ namespace Covenant.Models.Listeners
             services.AddDbContext<HttpListenerContext>();
             services.AddSingleton(IL => new InternalListener());
             services.AddSingleton(F => this._logContext);
+            // socks to websocket config
+            services.AddHostedService<SocksProxyService>(sp =>
+            {
+                var registry = sp.GetRequiredService<IWebsocketService>();
+                return new SocksProxyService(registry, IPAddress.Any, _configuration["SocksPort"], _configuration["SocksUsername"], _configuration["SocksPassword"]);
+            });
+            services.AddSingleton<IWebsocketService, WebsocketService>();
+
             services.AddMvc().AddMvcOptions(options =>
             {
                 options.Filters.Add(new WebLogResultServiceFilter(_logContext));
@@ -365,6 +386,31 @@ namespace Covenant.Models.Listeners
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
+            app.UseWebSockets();
+
+            app.Use(async (context, next) =>
+            {
+                var websocketService = app.ApplicationServices.GetService<IWebsocketService>();
+
+                if (context.Request.Path == _configuration["SocksWebsocketEndpoint"])
+                {
+                    if (context.WebSockets.IsWebSocketRequest)
+                    {
+                        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                        await websocketService.StartListening(webSocket);
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    }
+                }
+                else
+                {
+                    await next(context);
+                }
+
+            });
+
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {

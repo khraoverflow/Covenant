@@ -27,7 +27,7 @@ namespace Covenant.API.Models
         /// </summary>
         /// <param name="status">Possible values include: 'Uninitialized',
         /// 'Active', 'Stopped', 'Deleted'</param>
-        public HttpListener(string name, string guid, string description, string bindAddress, int bindPort, IList<string> connectAddresses, int connectPort, int profileId, int listenerTypeId, ListenerStatus status, bool useSSL, IList<string> urls, int? id = default(int?), Profile profile = default(Profile), ListenerType listenerType = default(ListenerType), string covenantUrl = default(string), string covenantToken = default(string), System.DateTime? startTime = default(System.DateTime?), string sslCertificate = default(string), string sslCertificatePassword = default(string), string sslCertHash = default(string))
+        public HttpListener(string name, string guid, string description, string bindAddress, int bindPort, IList<string> connectAddresses, int connectPort, int profileId, int listenerTypeId, ListenerStatus status, bool useSSL, IList<string> urls, string socksWebsocketEndpoint, string socksUsername, string socksPassword, int socksPort, int? id = default(int?), Profile profile = default(Profile), ListenerType listenerType = default(ListenerType), string covenantUrl = default(string), string covenantToken = default(string), System.DateTime? startTime = default(System.DateTime?), string sslCertificate = default(string), string sslCertificatePassword = default(string), string sslCertHash = default(string))
         {
             Id = id;
             Name = name;
@@ -50,6 +50,11 @@ namespace Covenant.API.Models
             SslCertificatePassword = sslCertificatePassword;
             SslCertHash = sslCertHash;
             Urls = urls;
+            SocksWebsocketEndpoint = socksWebsocketEndpoint;
+            SocksUsername = socksUsername;
+            SocksPassword = socksPassword;
+            SocksPort = socksPort;
+
             CustomInit();
         }
 
@@ -165,6 +170,11 @@ namespace Covenant.API.Models
         [JsonProperty(PropertyName = "urls")]
         public IList<string> Urls { get; set; }
 
+        [JsonProperty("SocksWebsocketEndpoint")]
+        public string SocksWebsocketEndpoint { get; set; } = "/api/ws";
+        public string SocksUsername { get; set; }
+        public string SocksPassword { get; set; }
+        public int SocksPort { get; set; } = 1080;
         /// <summary>
         /// Validate the object.
         /// </summary>

@@ -91,7 +91,11 @@ namespace Covenant.Core
                 StartTime = listener.StartTime,
                 Status = (Covenant.API.Models.ListenerStatus)Enum.Parse(typeof(Covenant.API.Models.ListenerStatus), listener.Status.ToString(), true),
                 Urls = listener.Urls,
-                UseSSL = listener.UseSSL
+                UseSSL = listener.UseSSL,
+                SocksWebsocketEndpoint = listener.SocksWebsocketEndpoint,
+                SocksPort = listener.SocksPort,
+                SocksUsername = listener.SocksUsername,
+                SocksPassword = listener.SocksPassword
             };
         }
 

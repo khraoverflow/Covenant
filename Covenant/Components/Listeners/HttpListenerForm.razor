@@ -124,6 +124,47 @@
         </select>
         <div class="text-danger"><ValidationMessage For="() => Listener.ProfileId" /></div>
     </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="SocksWebsocketEndpoint">Socks Websocket Endpoint</label>
+            <input id="SocksWebsocketEndpoint"
+                   name="SocksWebsocketEndpoint"
+                   @bind="@Listener.SocksWebsocketEndpoint"
+                   disabled="@Disabled"
+                   class="form-control">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="SocksPort">Socks Port</label>
+            <input id="SocksPort"
+                   name="SocksPort"
+                   @bind="@Listener.SocksPort"
+                   disabled="@Disabled"
+                   class="form-control"
+                   type="number">
+        </div>
+        <div class="text-danger"><ValidationMessage For="() => Listener.SocksPort" /></div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="SocksUsername">Socks Username</label>
+            <input id="SocksUsername"
+                   name="SocksUsername"
+                   @bind="@Listener.SocksUsername"
+                   disabled="@Disabled"
+                   class="form-control">
+        </div>
+
+        <div class="form-group col-md-4">
+            <label for="SocksPassword">Socks Password</label>
+            <input id="SocksPassword"
+                   name="SocksPassword"
+                   @bind="@Listener.SocksPassword"
+                   disabled="@Disabled"
+                   class="form-control">
+        </div>
+    </div>
     @ChildContent
 </EditForm>
 
