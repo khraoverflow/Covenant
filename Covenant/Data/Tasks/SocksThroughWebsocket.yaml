@@ -1,6 +1,6 @@
 - Name: SocksThroughWebsocket
   Aliases: [socks]
-  Description: connect to your c2 with socks5 , the server will forward traffic through websocket to the implant, make sure you set the full websocket url and enpoint, the endpoint is configured in the http listener.
+  Description: implant <- websocket -> c2 <- socks5 -> you (in proxychains disable dns proxying this implementation doesnt handle udp).
   Author: 
       Name: amine brahmi
       Handle: khraoverflow
